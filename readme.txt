@@ -10,3 +10,5 @@ start a project :
 django use so called ORM (object relational mapping )
 views handles sql 
 urls handle interaction between frontend and backend
+
+everytime you make changes that affect data model you do python manage.py makemigrations and then ,python manage.py migrate   
