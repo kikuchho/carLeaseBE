@@ -10,3 +10,13 @@ class BookMark(models.Model):
     def __str__(self):
         return self.author.username
 
+class Car(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    price = models.IntegerField()
+
+    def __str__(self):
+        return self.name 
+    
+
+    

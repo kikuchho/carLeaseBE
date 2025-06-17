@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers 
-from .models import BookMark
+from .models import BookMark, Car
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,3 +18,9 @@ class BookMarkSerializer(serializers.ModelSerializer):
         model = BookMark
         fields = ["id", "author", "plan", "contract_year"]
         extra_kwargs = {"author": {"raed_only": True}}
+
+class CarSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = Car
+        fields = ["id", "name", "price"]
+        extra_kwargs = {"id" : {"raed_only": True}}
