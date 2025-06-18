@@ -1,10 +1,30 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User 
 from rest_framework import generics
-from .serializers import UserSerializer , BookMarkSerializer
+from .serializers import CarSerializer, UserSerializer , BookMarkSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import BookMark
+from .models import Car
 #from clbackend.api import serializers
+
+
+class CarListCreate(generics.ListCreateAPIView):
+    #what serializer do is check if all the data is acurate 
+    serializer_class = CarSerializer
+    permission_classes = [AllowAny]
+
+    #below you are overriding methods 
+    def get_queryset(self):
+        return Car.objects.all()
+    
+    def  perform_create(self, serializer):
+       
+        if serializer.is_valid():
+            serializer.save()
+
+        else: 
+            print(serializer.errors) 
+
 
 #update 
 class BookMarkUpdate(generics.UpdateAPIView):

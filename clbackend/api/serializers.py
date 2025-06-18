@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 class BookMarkSerializer(serializers.ModelSerializer): 
     class Meta: 
         model = BookMark
-        fields = ["id", "author", "plan", "contract_year"]
+        fields = ["id", "author", "plan", "contract_year", "carid"]
         extra_kwargs = {"author": {"raed_only": True}}
 
 class CarSerializer(serializers.ModelSerializer):
