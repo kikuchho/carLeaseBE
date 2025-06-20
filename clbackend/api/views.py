@@ -12,6 +12,7 @@ class CarListCreate(generics.ListCreateAPIView):
     #what serializer do is check if all the data is acurate 
     serializer_class = CarSerializer
     permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
 
     #below you are overriding methods 
     def get_queryset(self):

@@ -17,10 +17,10 @@ class BookMarkSerializer(serializers.ModelSerializer):
     class Meta: 
         model = BookMark
         fields = ["id", "author", "plan", "contract_year", "carid"]
-        extra_kwargs = {"author": {"raed_only": True}}
+        extra_kwargs = {"author": {"read_only": True}}
 
 class CarSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Car
         fields = ["id", "name", "price"]
-        extra_kwargs = {"id" : {"raed_only": True}}
+        extra_kwargs = {"id" : {"read_only": True}}
