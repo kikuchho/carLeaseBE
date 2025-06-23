@@ -14,7 +14,9 @@ class BookMark(models.Model):
 class Car(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    price = models.IntegerField()
+    price = models.IntegerField(default=0)
+    grade = models.CharField(max_length=100, default="スタンダード")
+    imgname = models.CharField(max_length=100, default="default.png")
 
     def __str__(self):
         return self.name 

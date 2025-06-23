@@ -1,12 +1,44 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User 
+from django.http import JsonResponse
 from rest_framework import generics
-from .serializers import CarSerializer, UserSerializer , BookMarkSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from .serializers import CarSerializer, UserSerializer , BookMarkSerializer, CarPaymentSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import BookMark
 from .models import Car
+import math
 #from clbackend.api import serializers
 
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# @authentication_classes = []
+# def getpaylist(request, pk):
+#     try:
+#         posts = Car.objects.get(id=pk) 
+#         # create const for storing paylist
+#         paylist1 = math.trunc(posts.price * 0.012)
+#         paylist2 = math.trunc(posts.price * 0.009)
+#         paylist3 = math.trunc(posts.price * 0.006)
+#         paylist4 = math.trunc(posts.price * 0.003)
+       
+#         post_dict = {
+#             "paylist1": paylist1,
+#             "paylist2": paylist2,
+#             "paylist3": paylist3,
+#             "paylist4": paylist4
+#         }
+        
+#         return Response(post_dict)
+#     except Car.DoesNotExist:
+#         return Response({"error": "Car not found"}, status=404)
+
+class CarPaymentDetail(generics.RetrieveAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarPaymentSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
 
 class CarListCreate(generics.ListCreateAPIView):
     #what serializer do is check if all the data is acurate 
@@ -25,6 +57,8 @@ class CarListCreate(generics.ListCreateAPIView):
 
         else: 
             print(serializer.errors) 
+
+   
 
 
 #update 

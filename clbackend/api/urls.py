@@ -6,4 +6,5 @@ urlpatterns = [
     path("bookmakrs/delete/<int:pk>", views.BookMarkDelete.as_view(), name="delete-bookmark"),
     path("bookmarks/update/<int:pk>", views.BookMarkUpdate.as_view(), name="update-bookmark"),
     path("cars/", views.CarListCreate.as_view(), name="car-list-create"),
+    path("cars/<int:pk>/", views.CarPaymentDetail.as_view(), name="car-paylist"),
 ]
