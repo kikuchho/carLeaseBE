@@ -4,12 +4,17 @@ from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from .serializers import CarSerializer, UserSerializer , BookMarkSerializer, CarPaymentSerializer
+from .serializers import CarSerializer, ColorSerializer, GradeSerializer, InteriorSerializer, UserSerializer , BookMarkSerializer, CarPaymentSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import BookMark
-from .models import Car
+from .models import Car, Grade, Color, Interior, OptionPackage
 import math
-#from clbackend.api import serializers
+import requests
+from rest_framework import status
+
+
+# Provide API to URL.py 
+
 
 # @api_view(['GET'])
 # @permission_classes([AllowAny])
@@ -46,10 +51,11 @@ class CarListCreate(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
     authentication_classes = []  # Add this line to bypass authentication completely
 
-    #below you are overriding methods 
+    #get request
     def get_queryset(self):
         return Car.objects.all()
     
+    #post request 
     def  perform_create(self, serializer):
        
         if serializer.is_valid():
@@ -118,3 +124,101 @@ class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+
+
+
+#views for car options api
+
+class GradeListCreate(generics.ListCreateAPIView):
+    serializer_class = GradeSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
+
+    #get request 
+    def get_queryset(self):
+        return Grade.objects.all()
+    
+    #post request
+    def  perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+
+        else: 
+            print(serializer.errors)
+
+
+class ColorListCreate(generics.ListCreateAPIView):
+    serializer_class = ColorSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
+
+    #get request 
+    def get_queryset(self):
+        return Color.objects.all()
+    
+    #post request
+    def  perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+
+        else: 
+            print(serializer.errors)
+
+class InteriorListCreate(generics.ListCreateAPIView):
+    serializer_class = InteriorSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
+
+    #get request 
+    def get_queryset(self):
+        return Interior.objects.all()
+    
+    #post request
+    def  perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+
+        else: 
+            print(serializer.errors)
+
+
+
+
+#this use external API to get corporate information
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_corporate_info(request, corporate_number):
+    """
+    Proxy endpoint to fetch corporate information from Japanese hojin API
+    """
+    try:
+        # Make request to the external API
+        external_url = f"https://info.gbiz.go.jp/hojin/v1/hojin/{corporate_number}"
+        headers = {
+            'accept': 'application/json',
+            'X-hojinInfo-api-token': 'gO2vJSBxqcuR6jkvUbUy6lRqEe9dskV9'
+        }
+        
+        response = requests.get(external_url, headers=headers)
+        
+        if response.status_code == 200:
+            return Response(response.json(), status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {'error': 'Failed to fetch corporate information', 'status': response.status_code},
+                status=response.status_code
+            )
+            
+
+
+    except requests.exceptions.RequestException as e:
+        return Response(
+            {'error': 'Network error occurred', 'details': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+    except Exception as e:
+        return Response(
+            {'error': 'An unexpected error occurred', 'details': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
