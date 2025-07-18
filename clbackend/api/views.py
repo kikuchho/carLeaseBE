@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from .serializers import CarSerializer, ColorSerializer, GradeSerializer, InteriorSerializer, UserSerializer , BookMarkSerializer, CarPaymentSerializer
+from .serializers import CarSerializer, ColorSerializer, GradeSerializer, InteriorSerializer, OptionPackageSerializer, UserSerializer , BookMarkSerializer, CarPaymentSerializer, CarOptionsSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import BookMark
 from .models import Car, Grade, Color, Interior, OptionPackage
@@ -153,9 +153,17 @@ class ColorListCreate(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
     authentication_classes = []  # Add this line to bypass authentication completely
 
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return BookMark.objects.filter(author = user )
     #get request 
     def get_queryset(self):
-        return Color.objects.all()
+        thecar_id = self.kwargs.get('pk')
+
+        if thecar_id is None:
+            return Color.objects.all()
+        
+        return Color.objects.filter(car_id= thecar_id)
     
     #post request
     def  perform_create(self, serializer):
@@ -182,7 +190,29 @@ class InteriorListCreate(generics.ListCreateAPIView):
         else: 
             print(serializer.errors)
 
+class OptionPackageListCreate(generics.ListCreateAPIView):
+    serializer_class = OptionPackageSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
 
+    #get request 
+    def get_queryset(self):
+        return OptionPackage.objects.all()
+    
+    #post request
+    def  perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+
+        else: 
+            print(serializer.errors)
+
+
+class CarOptionsDetail(generics.RetrieveAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarOptionsSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
 
 
 #this use external API to get corporate information

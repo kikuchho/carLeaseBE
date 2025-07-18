@@ -8,4 +8,13 @@ urlpatterns = [
     path("cars/", views.CarListCreate.as_view(), name="car-list-create"),
     path("cars/<int:pk>/", views.CarPaymentDetail.as_view(), name="car-paylist"),
     path("corporate/<str:corporate_number>/", views.get_corporate_info, name="corporate-info"),
+
+
+    # Additional paths for car options page 
+    path("cars/<int:pk>/options/", views.CarOptionsDetail.as_view(), name="car-options"),
+
+    path("grades/", views.GradeListCreate.as_view(), name="grade-list-create"),
+    path("colors/", views.ColorListCreate.as_view(), name="color-list-create"),
+    path("interiors/", views.InteriorListCreate.as_view(), name="interior-list-create"),
+    path("optionpackages/", views.OptionPackageListCreate.as_view(), name="optionpackage-list-create"),
 ]
