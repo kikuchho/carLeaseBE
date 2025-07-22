@@ -87,7 +87,7 @@ class ColorSerializer(serializers.ModelSerializer):
 class InteriorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Interior
-        fields = ["id", "interior", "imgname" , "name", "car_id", "price"]
+        fields = ["id", "interior", "interiorcolor", "seat",  "imgname" , "name", "car_id", "price"]
         extra_kwargs = {"id" : {"read_only": True}}
 
     def create(self, validated_data):

@@ -57,6 +57,8 @@ class Color(models.Model):
 class Interior(models.Model):
     id = models.AutoField(primary_key=True)
     interior = models.CharField(max_length=100)
+    interiorcolor = models.CharField(max_length=100, default="ブラック")
+    seat = models.CharField(max_length=100, default="ファブリック･ブラック")
     name = models.CharField(max_length=100)
     imgname = models.CharField(max_length=100, default="default_interior.png")
     car_id = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='interiors')
