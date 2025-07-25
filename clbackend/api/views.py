@@ -4,9 +4,9 @@ from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from .serializers import CarSerializer, ColorSerializer, GradeSerializer, InteriorSerializer, OptionPackageSerializer, UserSerializer , BookMarkSerializer, CarPaymentSerializer, CarOptionsSerializer
+from .serializers import CarSerializer, ColorSerializer, GradeSerializer, InteriorExteriorUpgradeSerializer, InteriorSerializer, NumberplateSerializer, OptionPackageSerializer, TireUpgradeSerializer, UserSerializer , BookMarkSerializer, CarPaymentSerializer, CarOptionsSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import BookMark
+from .models import BookMark, InteriorExteriorUpgrade, Numberplate, TireUpgrade
 from .models import Car, Grade, Color, Interior, OptionPackage
 import math
 import requests
@@ -163,7 +163,7 @@ class ColorListCreate(generics.ListCreateAPIView):
         if thecar_id is None:
             return Color.objects.all()
         
-        return Color.objects.filter(car_id= thecar_id)
+        return Color.objects.filter(car_id = thecar_id)
     
     #post request
     def  perform_create(self, serializer):
@@ -207,12 +207,88 @@ class OptionPackageListCreate(generics.ListCreateAPIView):
         else: 
             print(serializer.errors)
 
+class OptionPackageUpdate(generics.UpdateAPIView):
+    serializer_class = OptionPackageSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        # thecarid = self.kwargs.get('pk')
+        # return OptionPackage.objects.filter(car_id = thecarid)
+        # The pk in the URL will automatically filter to the specific OptionPackage
+        return OptionPackage.objects.all()
+    
+    def perform_update(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+            
+        else: 
+            print(serializer.errors)
+
+
+
+
+class InteriorExteriorUpgradeListCreate(generics.ListCreateAPIView):
+    serializer_class = InteriorExteriorUpgradeSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
+
+    #get request 
+    def get_queryset(self):
+        return InteriorExteriorUpgrade.objects.all()
+    
+    #post request
+    def  perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+
+        else: 
+            print(serializer.errors)
+
+class TireUpgradeListCreate(generics.ListCreateAPIView):
+    serializer_class = TireUpgradeSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
+
+    #get request 
+    def get_queryset(self):
+        return TireUpgrade.objects.all()
+    
+    #post request
+    def  perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+
+        else: 
+            print(serializer.errors)
+
+
+
+class NumberplateListCreate(generics.ListCreateAPIView):
+    serializer_class = NumberplateSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
+    #get request
+    def get_queryset(self):
+        return Numberplate.objects.all()
+    #post request
+    def  perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+
+        else: 
+            print(serializer.errors)
+
 
 class CarOptionsDetail(generics.RetrieveAPIView):
     queryset = Car.objects.all()
     serializer_class = CarOptionsSerializer
     permission_classes = [AllowAny]
     authentication_classes = []
+
+    #get request
+    def get_queryset(self):
+        return Car.objects.all()
+
 
 
 #this use external API to get corporate information

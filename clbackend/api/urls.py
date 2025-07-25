@@ -17,4 +17,9 @@ urlpatterns = [
     path("colors/", views.ColorListCreate.as_view(), name="color-list-create"),
     path("interiors/", views.InteriorListCreate.as_view(), name="interior-list-create"),
     path("optionpackages/", views.OptionPackageListCreate.as_view(), name="optionpackage-list-create"),
+    path("optionpackages/update/<int:pk>/", views.OptionPackageUpdate.as_view(), name="optionpackage-update"),
+    path("interiorexteriorupgrades/", views.InteriorExteriorUpgradeListCreate.as_view(), name="interiorexteriorupgrade-list-create"),
+    path("tireupgrades/", views.TireUpgradeListCreate.as_view(), name="tireupgrade-list-create"),
+    path("numberplates/", views.NumberplateListCreate.as_view(), name="numberplate-list-create"),
+
 ]

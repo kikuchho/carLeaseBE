@@ -3,13 +3,29 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class BookMark(models.Model): 
+    id = models.AutoField(primary_key=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "bookmarks")
     plan = models.JSONField(default=list) #array of objects 
     contract_year = models.IntegerField()
+
     carid = models.IntegerField()
+    imgname = models.CharField(max_length=100, default="default.png")  # Default image name if not selected
+    # Foreign keys to other models, default to 0 if not selected
+    grade_id = models.IntegerField(default=0)  # ForeignKey to Grade model
+    color_id = models.IntegerField(default=0)  # ForeignKey to Color model
+    interior_id = models.IntegerField(default=0)  # ForeignKey to Interior model
+    option_package_id = models.IntegerField(default=0)  # ForeignKey to OptionPackage model
+    option_package_listitems = models.JSONField(default=list)  # List of selected items in the option package
+    interior_exterior_upgrade_id = models.IntegerField(default=0)  # ForeignKey to InteriorExteriorUpgrade model
+    tire_upgrade_id = models.IntegerField(default=0)  # ForeignKey to TireUpgrade model
+    numberplate_number = models.CharField(max_length=100, default="")  # Number plate number
+
+    created_at = models.DateTimeField(auto_now_add=True )
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.author.username
+
 
 class Car(models.Model):
     id = models.AutoField(primary_key=True)
@@ -72,18 +88,52 @@ class OptionPackage(models.Model):
     id = models.AutoField(primary_key=True)
     optionpackage = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, default="オプションパッケージ")
+    subtitle = models.JSONField(default=list )
+    listItems = models.JSONField(default=list) #store image url and text for each item
+    comment = models.CharField(max_length=100, default="") #ex おすすめ
     car_id = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='option_packages')
     price = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
     
+
+
+    
 class InteriorExteriorUpgrade(models.Model):
     id = models.AutoField(primary_key=True)
     interior_exterior_upgrade = models.CharField(max_length=100)
+    imgurl = models.CharField(max_length=255, default="default_upgrade.png")  # URL for the image
+    is_exterior = models.BooleanField(default=False)  # True if it's an exterior upgrade, False if interior
     name = models.CharField(max_length=100)
     car_id = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='interior_exterior_upgrades')
     price = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name   
+
+
+class TireUpgrade(models.Model):
+    id = models.AutoField(primary_key=True)
+    tire_upgrade = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, default="寒冷地仕様")
+    description = models.CharField(max_length=255, default="※上記オプション以外をご希望のお客様は取扱い販売店にお問合せください")
+    car_id = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='tire_upgrades')
+    price = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
+    
+
+class Numberplate(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=100)
+    imgurl = models.CharField(max_length=100, default="default_numberplate.png")  # URL for the image
+    numberplate = models.CharField(max_length=100, default="")
+    car_id = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='numberplates')
+    price = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
