@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 class BookMarkSerializer(serializers.ModelSerializer): 
     class Meta: 
         model = BookMark
-        fields = ["id", "author", "plan", "contract_year", "carid", "imgname", "grade_id", "color_id", "interior_id", 
+        fields = ["id", "author", "plan", "contract_year", "carid", "imgname","is_upFrontFee", "grade_id", "color_id", "interior_id", 
                   "option_package_id", "option_package_listitems", "interior_exterior_upgrade_id", "tire_upgrade_id", "numberplate_number", "created_at", "updated_at"]
         extra_kwargs = {
                         "author": {"read_only": True},

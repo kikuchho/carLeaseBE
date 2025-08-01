@@ -64,7 +64,7 @@ class CarListCreate(generics.ListCreateAPIView):
         else: 
             print(serializer.errors) 
 
-   
+
 
 
 #update 
@@ -107,6 +107,20 @@ class BookMarkListCreate(generics.ListCreateAPIView):
         else: 
             print(serializer.errors)
 
+#get one bookmark by bookmark id
+class BookMarkDetail(generics.RetrieveAPIView):
+    serializer_class = BookMarkSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return BookMark.objects.filter(author=user)
+    
+    def get_object(self):
+        # Get the bookmark by its primary key (pk) from the URL
+        pk = self.kwargs.get('pk')
+        return BookMark.objects.get(pk=pk, author=self.request.user)
+
 
 class BookMarkDelete(generics.DestroyAPIView):
     
@@ -147,6 +161,22 @@ class GradeListCreate(generics.ListCreateAPIView):
         else: 
             print(serializer.errors)
 
+class GradeUpdate(generics.UpdateAPIView):
+    serializer_class = GradeSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
+
+    #get request 
+    def get_queryset(self):
+        return Grade.objects.all()
+    
+    #post request
+    def  perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+
+        else: 
+            print(serializer.errors)
 
 class ColorListCreate(generics.ListCreateAPIView):
     serializer_class = ColorSerializer
@@ -170,6 +200,21 @@ class ColorListCreate(generics.ListCreateAPIView):
         if serializer.is_valid():
             serializer.save()
 
+        else: 
+            print(serializer.errors)
+
+class ColorUpdate(generics.UpdateAPIView):
+    serializer_class = ColorSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
+
+    def get_queryset(self):
+        return Color.objects.all()
+    
+    def perform_update(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+            
         else: 
             print(serializer.errors)
 
@@ -244,6 +289,22 @@ class InteriorExteriorUpgradeListCreate(generics.ListCreateAPIView):
         else: 
             print(serializer.errors)
 
+class InteriorExteriorUpgradeUpdate(generics.UpdateAPIView):
+    serializer_class = InteriorExteriorUpgradeSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
+
+    def get_queryset(self):
+        # The pk in the URL will automatically filter to the specific InteriorExteriorUpgrade
+        return InteriorExteriorUpgrade.objects.all()
+    
+    def perform_update(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+            
+        else: 
+            print(serializer.errors)
+
 class TireUpgradeListCreate(generics.ListCreateAPIView):
     serializer_class = TireUpgradeSerializer
     permission_classes = [AllowAny]
@@ -278,6 +339,21 @@ class NumberplateListCreate(generics.ListCreateAPIView):
         else: 
             print(serializer.errors)
 
+class NumberplateUpdate(generics.UpdateAPIView):
+    serializer_class = NumberplateSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []  # Add this line to bypass authentication completely
+
+    def get_queryset(self):
+        # The pk in the URL will automatically filter to the specific Numberplate
+        return Numberplate.objects.all()
+    
+    def perform_update(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+            
+        else: 
+            print(serializer.errors)
 
 class CarOptionsDetail(generics.RetrieveAPIView):
     queryset = Car.objects.all()

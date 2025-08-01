@@ -11,6 +11,7 @@ class BookMark(models.Model):
     carid = models.IntegerField()
     imgname = models.CharField(max_length=100, default="default.png")  # Default image name if not selected
     # Foreign keys to other models, default to 0 if not selected
+    is_upFrontFee = models.BooleanField(default=False)  # True if upfront fee is selected, False if not
     grade_id = models.IntegerField(default=0)  # ForeignKey to Grade model
     color_id = models.IntegerField(default=0)  # ForeignKey to Color model
     interior_id = models.IntegerField(default=0)  # ForeignKey to Interior model
