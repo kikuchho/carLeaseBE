@@ -8,6 +8,7 @@ class BookMark(models.Model):
     plan = models.JSONField(default=list) #array of objects 
     contract_year = models.IntegerField()
 
+
     carid = models.IntegerField()
     imgname = models.CharField(max_length=100, default="default.png")  # Default image name if not selected
     # Foreign keys to other models, default to 0 if not selected
@@ -17,9 +18,9 @@ class BookMark(models.Model):
     interior_id = models.IntegerField(default=0)  # ForeignKey to Interior model
     option_package_id = models.IntegerField(default=0)  # ForeignKey to OptionPackage model
     option_package_listitems = models.JSONField(default=list)  # List of selected items in the option package
-    interior_exterior_upgrade_id = models.IntegerField(default=0)  # ForeignKey to InteriorExteriorUpgrade model
-    tire_upgrade_id = models.IntegerField(default=0)  # ForeignKey to TireUpgrade model
-    numberplate_number = models.CharField(max_length=100, default="")  # Number plate number
+    interior_exterior_upgrade_ids = models.JSONField(default=list)  # Array of IDs  = models.IntegerField(default=0)  # ForeignKey to InteriorExteriorUpgrade model
+    tire_upgrade_ids = models.JSONField(default=list)  # ForeignKey to TireUpgrade model
+    numberplate_number = models.CharField(max_length=100, default="", blank=True)  # Number plate number
 
     created_at = models.DateTimeField(auto_now_add=True )
     updated_at = models.DateTimeField(auto_now=True)
