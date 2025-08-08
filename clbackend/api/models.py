@@ -9,7 +9,7 @@ class BookMark(models.Model):
     contract_year = models.IntegerField()
 
 
-    carid = models.IntegerField()
+    carid = models.ForeignKey('Car', on_delete=models.CASCADE, related_name='bookmarks')
     imgname = models.CharField(max_length=100, default="default.png")  # Default image name if not selected
     # Foreign keys to other models, default to 0 if not selected
     is_upFrontFee = models.BooleanField(default=False)  # True if upfront fee is selected, False if not
