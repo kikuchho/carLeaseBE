@@ -21,6 +21,7 @@ class BookMark(models.Model):
     interior_exterior_upgrade_ids = models.JSONField(default=list)  # Array of IDs  = models.IntegerField(default=0)  # ForeignKey to InteriorExteriorUpgrade model
     tire_upgrade_ids = models.JSONField(default=list)  # ForeignKey to TireUpgrade model
     numberplate_number = models.CharField(max_length=100, default="", blank=True)  # Number plate number
+    totalprice = models.IntegerField(default=0) 
 
     created_at = models.DateTimeField(auto_now_add=True )
     updated_at = models.DateTimeField(auto_now=True)
